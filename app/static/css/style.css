@@ -1,0 +1,147 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+.hero {
+    width: 100%;
+    height: 100vh;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url(../images/background.jpg);
+    background-size: cover;
+    background-position: center;
+}
+
+.flash-error {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffcccb;
+    width: 100%;
+    height: 5%;
+    color: #8b0000;
+
+}
+
+.flash-success {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #b1f3b1;
+    width: 100%;
+    height: 5%;
+    color: #16390e;
+}
+
+.flashed-messages p {
+    padding: 20px 30px;
+}
+
+.flashed-messages button {
+    margin-left: auto;
+    border: 0px;
+}
+
+
+.navigation-button {
+    text-decoration: none;
+    color: rgba(128, 128, 128);
+
+}
+
+.navbar {
+    width: 85%;
+    margin: auto;
+    padding: 35px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    animation: fadeIn 5s;
+}
+
+.logo {
+    color: white;
+    letter-spacing: 3px;
+    cursor: pointer;
+}
+
+.navbar ul li {
+    list-style: none;
+    display: inline-block;
+    margin: 0 20px;
+    position: relative;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.navbar ul li::after {
+    content: '';
+    height: 3px;
+    width: 0;
+    background: rgba(255, 200, 100);
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    transition: 0.5s;
+}
+
+.navbar ul li:hover::after {
+    width: 100%;
+}
+
+.content {
+    width: 100%;
+    position: absolute;
+    top: 40%;
+    transform: translateY(-50%);
+    text-align: center;
+    color: #fff;
+    animation: fadeIn 5s;
+}
+
+.content h1 {
+    margin-bottom: 15px;
+    font-size: 40px;
+    text-transform: uppercase;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.content p {
+    margin-bottom: 20px;
+    font-weight: 100;
+    line-height: 25px;
+}
+
+
+button {
+    margin-right: 20px;
+    color: rgba(128,128,128);
+    padding: 10px 25px;
+    background: transparent;
+    border: 1px solid;
+    border-radius: 20px;
+    outline: none;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+button:hover {
+    color: rgba(255, 200, 100);
+}
+
+.form-group {
+    margin: 20px;
+
+}

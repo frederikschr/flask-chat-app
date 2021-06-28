@@ -1,0 +1,23 @@
+{% extends "base.html" %} {% block title %} Sign up {% endblock %}
+{% from 'field-macro.html' import displayField %}
+{% block content %}
+
+    <h1 align="center">Sign up</h1>
+
+    <form action="{{url_for('auth.sign_up')}}", method="POST">
+        {{ displayField(form.username, 'Username', autocomplete="off", autofocus=true) }}
+        {{ displayField(form.email, 'Email', autocomplete="on", autofocus=true) }}
+        {{ displayField(form.password, 'Password', autocomplete="off", autofocus=true) }}
+        {{ displayField(form.confirm_password, 'Confirm password', autocomplete="off", autofocus=true) }}
+
+        {{ form.csrf_token }}
+
+        <button type="submit">Register</button>
+
+    </form>
+
+
+
+
+
+{% endblock %}
