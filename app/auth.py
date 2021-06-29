@@ -9,7 +9,7 @@ auth = Blueprint("auth", __name__)
 
 @auth.route("/sign-up", methods=["GET", "POST"])
 def sign_up():
-    if not current_user:
+    if not current_user.is_authenticated:
         reg_form = RegistrationForm()
 
         if reg_form.validate_on_submit():
@@ -39,7 +39,6 @@ def sign_up():
 
 @auth.route("/login", methods=["GET", "POST"])
 def login():
-
     login_form = LoginForm()
 
     if login_form.validate_on_submit():
