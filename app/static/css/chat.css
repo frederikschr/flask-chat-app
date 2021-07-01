@@ -1,0 +1,11 @@
+.chat-heading {
+    padding-bottom: 50px;
+}
+
+.input-section {
+}
+
+.display-section {
+    text-align: center;
+    overflow-y: scroll;
+}

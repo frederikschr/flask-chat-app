@@ -1,4 +1,22 @@
 {% extends "base.html" %} {% block title %} Chat {% endblock %}
 {% block content %}
-    <h1 align="center">Chat</h1>
+    <h1 class="chat-heading">Chat</h1>
+
+    <div class="chat">
+
+            <div class="messages">
+
+                <div class="display-section" id="display-message-section"></div>
+
+                <div class="input-section" id="input-area">
+                    <input type="text" id="user_message" placeholder="Type message..." autocomplete="off">
+                    <button class="send-button" type="button" id="send_message">Send</button>
+                </div>
+
+            </div>
+
+
+    </div>
+
+
 {% endblock %}

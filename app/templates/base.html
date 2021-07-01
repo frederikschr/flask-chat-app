@@ -5,6 +5,9 @@
 
     <head>
         <link rel="stylesheet" href="../static/css/style.css">
+        <link rel="stylesheet" href="../static/css/chat.css">
+
+        <link rel="stylesheet" href="../static/css/all.min.css">
         <script src="../static/scripts/chat.js"></script>
     </head>
 
@@ -20,8 +23,6 @@
 
     <body>
         <div class="hero">
-
-
             <div class="flashed-messages">
                 {% with messages = get_flashed_messages(with_categories=true) %} {% if
                 messages %} {% for category, message in messages %} {% if category ==
@@ -42,11 +43,20 @@
                 {% endif %} {% endfor %} {% endif %} {% endwith %}
             </div>
 
-
-
             <div class="navbar">
                 <h1 class="logo">F-CHAT</h1>
-                <ul>
+
+                <div class="bars">
+                    <i class="fas fa-bars" onclick="showMenu()"></i>
+                </div>
+
+                <ul id="nav-links">
+
+
+                    <div class="close">
+                        <i class="fas fa-times" onclick="hideMenu()"></i>
+                    </div>
+
                     <li><a href="/">Home</a></li>
 
                     {% if user.is_authenticated%}
@@ -58,7 +68,10 @@
                     {% endif %}
 
                     <li><a href="#">Contact</a></li>
+
+
                 </ul>
+
             </div>
 
             <div class="content">
@@ -66,6 +79,18 @@
             </div>
         </div>
     </body>
+
+    <script>
+        var navbar = document.getElementById('nav-links');
+
+        function showMenu() {
+            navbar.style.right = '0';
+        }
+
+        function hideMenu() {
+            navbar.style.right = '-200px';
+        }
+    </script>
 
 
 
