@@ -1,8 +1,11 @@
 {% extends "base.html" %} {% block title %} Home {% endblock %}
 {% from 'field-macro.html' import displayField %}
 {% block content %}
-    <h1>Welcome to F-CHAT</h1>
-    <p>The modern way of chatting on the internet</p>
-    <button type="button" onclick="window.location.href='/sign-up'">Sign Up</button>
-    <button type="button" onclick="window.location.href='/login'">Login</button>
+
+    <div class="index">
+        <h1>Welcome to F-CHAT</h1>
+        <p>The modern way of chatting on the internet</p>
+        <button class="sign-up" type="button" onclick="window.location.href='/sign-up'">Sign Up</button>
+        <button class="login" type="button" onclick="window.location.href='/login'">Login</button>
+    </div>
 {% endblock %}

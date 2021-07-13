@@ -108,34 +108,26 @@
 }
 
 .content {
-    width: 100%;
-    position: relative;
-    top: 40%;
-    transform: translateY(-50%);
-    text-align: center;
-    color: #fff;
     animation: fadeIn 5s;
 }
 
-.content h1 {
-    margin-bottom: 15px;
-    font-size: 40px;
-    text-transform: uppercase;
+.index {
+    position: relative;
+    top: 60px;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+.content h1 {
+    font-size: 40px;
+    text-align: center;
+    text-transform: uppercase;
+    padding-bottom: 10px;
 }
 
 .content p {
     margin-bottom: 20px;
     font-weight: 100;
     line-height: 25px;
+    text-align: center;
 }
 
 button {
@@ -177,31 +169,40 @@ button:hover {
     margin: 20px;
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 @media (max-width: 650px) {
     .navbar ul li {
         display: block;
+        top: 10%;
+        width: 0;
+        text-align: left;
+        padding-bottom: 20px;
+        font-size: 16px;
+        transition: .2s;
+    }
+
+    .navbar ul li:hover {
+        font-size: 18px;
     }
 
     .navbar ul{
         position: absolute;
-        background: rgba(255, 200, 100);
+        background: #A7754D;
         height: 100vh;
-        width: 200px;
+        width: 160px;
         top: 0;
         right: -200px;
         z-index: 1;
         transition: 1s;
 
-    }
-
-    .navbar ul li {
-        top: 50px;
-        padding-bottom: 20px;
-        width: 0;
-    }
-
-    .hero {
-        font-size: 10px;
     }
 
     .bars i {
@@ -210,10 +211,13 @@ button:hover {
 
     .close i {
         display: block;
-
     }
 
     .content h1 {
-        font-size: 30px;
+        font-size: 25px;
+    }
+
+    .content p {
+        font-size: 12px;
     }
 }

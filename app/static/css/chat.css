@@ -1,11 +1,55 @@
 .chat-heading {
-    padding-bottom: 50px;
+    color: #fff;
 }
 
-.input-section {
-}
+.container {
+    display: grid;
+    height: 75vh;
+    position: relative;
+    grid-template-columns: 0.2fr 1fr;
+    grid-template-rows: 1fr 0.2fr;
+    grid-gap: 1rem;
 
-.display-section {
+    grid-template-areas:
+        "sidebar message"
+        "sidebar input"
+}
+#room-section {
+    grid-area: sidebar;
+    justify-self: center;
     text-align: center;
-    overflow-y: scroll;
+    }
+
+#message-area {
+    grid-area: message;
 }
+
+#message-area #display-message-section {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    top: 40%;
+    left: 50%;
+    color: white;
+}
+
+#input-area {
+    grid-area: input;
+    text-align: center;
+}
+
+@media (max-width: 650px) {
+    .container {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr; 0.2fr; 0.5fr;
+
+        grid-template-areas:
+        "message"
+        "input"
+        "sidebar"
+    }
+
+}
+
+
+
