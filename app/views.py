@@ -12,14 +12,16 @@ def index():
 
 @views.route("/chat", methods=["GET", "POST"])
 def chat():
-    if not Room.query.filter_by(room_name="Lobby").first():
+    lobby_room =  Room.query.filter_by(room_name="Lobby").first()
+    if not lobby_room:
         lobby_room = Room(room_name="Lobby")
         db.session.add(lobby_room)
         for user in User.query.all():
             lobby_room.members.append(user)
         db.session.commit()
-
-    #print(session["current_room"])
+    if current_user not in lobby_room.members:
+        lobby_room.members.append(current_user)
+        db.session.commit()
 
     return render_template("chat.html", user=current_user, rooms=current_user.rooms, current_room=Room.query.filter_by(room_name=session["current_room"]).first())
 
@@ -60,7 +62,3 @@ def delete_room():
         db.session.commit()
         flash(f"successfully deleted {room}", category="success")
     return redirect(url_for("views.index"))
-
-@views.route("/refresh", methods=["GET", "POST"])
-def refresh():
-    return redirect(url_for("views.chat"))

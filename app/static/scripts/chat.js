@@ -37,6 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
             else {
                 leaveRoom(room);
                 joinRoom(newRoom);
+                setTimeout(function() {
+                    location.reload();
+                    }, 50);
             }
         }
     })
