@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     var username = document.querySelector('#get-username').innerHTML;
 
-    var room = "Lobby";
-    joinRoom (room);
+    var room = document.querySelector('#current_room').innerHTML;
+    joinRoom(room);
 
     socket.on('connect', function() {
         console.log('Connected to server');
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //Send button clicked
     document.querySelector('#send_message').onclick = () => {
-    socket.send({'message': document.querySelector('#user_message').value, 'room': room});
+    socket.send({'message': document.querySelector('#user_message').value, 'username': username, 'room': room});
     document.querySelector('#user_message').value = '';
     }
 
@@ -32,12 +32,11 @@ document.addEventListener('DOMContentLoaded', () => {
         button.onclick = () => {
             var newRoom = button.innerHTML;
             if (newRoom == room) {
-                printSysMsg('You are already in the ' + room + 'room.');
+                printSysMsg('You are already in the ' + room + ' room.');
             }
             else {
                 leaveRoom(room);
                 joinRoom(newRoom);
-                room = newRoom;
             }
         }
     })
@@ -51,11 +50,23 @@ document.addEventListener('DOMContentLoaded', () => {
         socket.emit('leave', {'username': username,'room': room})
     }
 
-   function printSysMsg(message){
+   function printSysMsg(message) {
         var p = document.createElement('p');
         p.setAttribute("class", "system-msg");
         p.innerHTML = '<i>' + message + '</i>';
         document.querySelector('#display-message-section').append(p);
    }
-
 })
+
+function deleteRoom(room) {
+    console.log(room);
+    var wantToDelete = confirm('Are you sure you want to delete this room?');
+    if(wantToDelete) {
+        var xhr = new XMLHttpRequest();
+        sender = JSON.stringify({'room': room});
+        xhr.open('POST', '/delete-room');
+        xhr.send(sender);
+        window.location.reload();
+
+  }
+}

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, url_for, redirect, session
+from flask import Blueprint, render_template, flash, url_for, redirect, session, current_app
 from flask_login import login_user, logout_user, current_user, login_required
 from .wtform_fields import RegistrationForm, LoginForm
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -51,8 +51,8 @@ def login():
             if check_password_hash(user.password, password):
                 login_user(user)
                 flash("Logged in successfully", category="success")
+                session["current_room"] = "Lobby"
                 return redirect(url_for("views.chat"))
-
             else:
                 flash("Password is incorrect", category="error")
         else:

@@ -1,8 +1,9 @@
+from flask import session
 from flask_socketio import SocketIO, emit, send, join_room, leave_room
 from app import app
 from flask_login import current_user
 
-socketio = SocketIO(app)
+socketio = SocketIO(app, manage_session=False)
 
 @socketio.on('connect')
 def on_connect():
@@ -11,15 +12,18 @@ def on_connect():
 @socketio.on('message')
 def on_message(msg):
     if current_user.is_authenticated:
+        user = msg["username"]
         message = msg["message"]
         room = msg["room"]
-        send({"message": message, "username": current_user.username}, room=room)
+        send({"message": message, "username": user}, room=room)
 
 @socketio.on('join')
 def on_join(data):
     user = data["username"]
     room = data["room"]
+    print(room)
     join_room(room)
+    session["current_room"] = room
     emit("room-manager", {"message": f"{user} has joined the {room} room"}, room=room)
 
 @socketio.on('leave')

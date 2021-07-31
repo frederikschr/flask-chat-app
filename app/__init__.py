@@ -1,6 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
-from flask_socketio import SocketIO, emit, send, join_room, leave_room
+from flask import Flask
+from flask_session import Session
 from flask_login import LoginManager
 from .models import *
 from os import path
@@ -9,10 +8,13 @@ app = Flask(__name__)
 
 def create_app():
     app.config["SECRET_KEY"] = "secret!"
+    app.config["SESSION_TYPE"] = "filesystem"
     app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_NAME}"
 
     login_manager = LoginManager()
     login_manager.init_app(app)
+
+    Session(app)
 
     @login_manager.user_loader
     def load_user(id):
