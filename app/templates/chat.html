@@ -21,8 +21,14 @@
             {% endfor %}
         </div>
 
-        <div id="message-area">
-            <div style="color: black;" id="display-message-section"></div>
+        <div style="color: black;" id="display-message-section">
+            {% for message in current_room.messages %}
+                {% if message.is_system_message %}
+                    <p><i>{{ message.content }}</i></p>
+                {% else %}
+                    <p>{{ message.author }}: {{ message.content }}</p>
+                {% endif %}
+            {% endfor %}
         </div>
 
         <div id="input-area">

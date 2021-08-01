@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function joinRoom(room) {
         socket.emit('join', {'username': username, 'room': room})
-        document.querySelector('#display-message-section').innerHTML = '';
+        //document.querySelector('#display-message-section').innerHTML = '';
     }
 
     function leaveRoom(room) {
