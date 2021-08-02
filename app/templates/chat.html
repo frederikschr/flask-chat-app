@@ -26,7 +26,12 @@
                 {% if message.is_system_message %}
                     <p><i>{{ message.content }}</i></p>
                 {% else %}
-                    <p>{{ message.author }}: {{ message.content }}</p>
+                    {% if message in user.messages %}
+                        <p style="color: red;">{{ message.author }}: {{ message.content }}</p>
+                    {% else %}
+                        <p>{{ message.author }}: {{ message.content }}</p>
+                    {% endif %}
+
                 {% endif %}
             {% endfor %}
         </div>
@@ -37,9 +42,7 @@
         </div>
 
         <div id="room-section">
-
             <p style="color: white;" >Rooms</p>
-
             {% for room in rooms %}
                 {% if room.owner == user.username %}
                     <button style="color: red;" class="select-room" type="button">{{room.room_name}}</button>
@@ -49,7 +52,6 @@
                     <button class="select-room" type="button">{{room.room_name}}</button>
                 {% endif %}
             {% endfor %}
-
         </div>
 
         <div style="color: black;" id="get-username">{{user.username}}</div>

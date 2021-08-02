@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
             var p = document.createElement('p');
             var br = document.createElement('br');
             p.innerHTML = data['username'] + ": " + data['message'];
+            p.style.color = "red";
             document.querySelector('#display-message-section').append(p);
       })
 

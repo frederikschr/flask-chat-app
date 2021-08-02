@@ -23,6 +23,8 @@ def chat():
         lobby_room.members.append(current_user)
         db.session.commit()
 
+    print(User.query.all())
+
     return render_template("chat.html", user=current_user, rooms=current_user.rooms, current_room=Room.query.filter_by(room_name=session["current_room"]).first())
 
 @views.route("/create-room", methods=["GET", "POST"])
