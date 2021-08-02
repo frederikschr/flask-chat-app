@@ -23,7 +23,10 @@ def chat():
         lobby_room.members.append(current_user)
         db.session.commit()
 
-    print(User.query.all())
+    print(current_user.authored_messages)
+
+    for message in current_user.messages:
+        print(message)
 
     return render_template("chat.html", user=current_user, rooms=current_user.rooms, current_room=Room.query.filter_by(room_name=session["current_room"]).first())
 
@@ -36,7 +39,6 @@ def create_room():
             room_name = room_form.room_name.data
             room = Room(room_name=room_name, owner=current_user.username)
             db.session.add(room)
-            db.session.commit()
             for user in users:
                 user = User.query.filter_by(username=user).first()
                 room.members.append(user)

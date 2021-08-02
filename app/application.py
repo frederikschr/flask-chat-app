@@ -6,9 +6,11 @@ from .models import *
 
 socketio = SocketIO(app, manage_session=False)
 
-def create_message(username, content, room, is_system_message=False):
-    new_message = Message(author=User.query.filter_by(username=username).first().username, content=content, room_id=Room.query.filter_by(room_name=room).first().id, is_system_message=is_system_message)
-    db.session.add(new_message)
+def create_message(author, content, room, is_system_message=False):
+    message = Message(author=author, content=content, room_id=Room.query.filter_by(room_name=room).first().id, is_system_message=is_system_message)
+    db.session.add(message)
+    for user in Room.query.filter_by(room_name=room).first().members:
+        message.receivers.append(user)
     db.session.commit()
 
 @socketio.on('connect')
@@ -31,7 +33,7 @@ def on_join(data):
     join_room(room)
     session["current_room"] = room
     message = f"{user} has joined the {room} room"
-    create_message(user, message, room, is_system_message=True)
+    create_message(None, message, room, is_system_message=True)
     emit("room-manager", {"message": message}, room=room)
 
 @socketio.on('leave')
@@ -40,7 +42,7 @@ def on_leave(data):
     room = data["room"]
     leave_room(room)
     message = f"{user} has left the {room} room"
-    create_message(user, message, room, is_system_message=True)
+    create_message(None, message, room, is_system_message=True)
     emit("room-manager", {"message": message}, room=room)
 
 

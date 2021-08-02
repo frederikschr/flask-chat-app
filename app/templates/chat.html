@@ -23,15 +23,18 @@
 
         <div style="color: black;" id="display-message-section">
             {% for message in current_room.messages %}
-                {% if message.is_system_message %}
-                    <p><i>{{ message.content }}</i></p>
-                {% else %}
-                    {% if message in user.messages %}
-                        <p style="color: red;">{{ message.author }}: {{ message.content }}</p>
-                    {% else %}
-                        <p>{{ message.author }}: {{ message.content }}</p>
-                    {% endif %}
+                {% if message in user.messages %}
 
+                    {% if message.is_system_message %}
+                        <p><i>{{ message.content }}</i></p>
+                    {% else %}
+                        {% if message.author == user.username %}
+                            <p style="color: red;">{{ message.author }}: {{ message.content }}</p>
+                        {% else %}
+                            <p>{{ message.author }}: {{ message.content }}</p>
+                        {% endif %}
+
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         </div>
