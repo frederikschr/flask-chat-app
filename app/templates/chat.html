@@ -21,8 +21,10 @@
             {% endfor %}
         </div>
 
-        <div id="clear-chat-history">
-    
+        <div id="clear-room">
+            {% if current_room.owner == user.username %}
+                <button onclick="clearRoom('{{current_room.room_name}}')">Clear</button>
+            {% endif %}
 
         </div>
 
@@ -37,7 +39,6 @@
                         {% else %}
                             <p>{{ message.author }}: {{ message.content }}</p>
                         {% endif %}
-
                     {% endif %}
                 {% endif %}
             {% endfor %}

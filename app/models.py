@@ -15,20 +15,27 @@ message_receivers = db.Table("message_receivers",
                              )
 
 class User(db.Model, UserMixin):
+    __tablename__ = "user"
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80))
     email = db.Column(db.String(100))
     password = db.Column(db.String(200))
     authored_messages = db.relationship('Message')
+    owned_rooms = db.relationship('Room')
     rooms = db.relationship('Room', secondary=room_members, backref=db.backref('members', lazy='dynamic'))
 
-class Room(db.Model, UserMixin):
+class Room(db.Model):
+    __tablename__ = "room"
+
     id = db.Column(db.Integer, primary_key=True)
     room_name = db.Column(db.String(100))
-    owner = db.Column(db.String(10))
+    owner = db.Column(db.String(80), db.ForeignKey('user.username'))
     messages = db.relationship('Message')
 
-class Message(db.Model, UserMixin):
+class Message(db.Model):
+    __tablename__ = "message"
+
     id = db.Column(db.Integer, primary_key=True)
     room_id = db.Column(db.Integer, db.ForeignKey('room.id'))
     author = db.Column(db.String(80), db.ForeignKey('user.username'))

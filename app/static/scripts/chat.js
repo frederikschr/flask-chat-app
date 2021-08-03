@@ -47,7 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function joinRoom(room) {
         socket.emit('join', {'username': username, 'room': room})
-        //document.querySelector('#display-message-section').innerHTML = '';
     }
 
     function leaveRoom(room) {
@@ -57,13 +56,12 @@ document.addEventListener('DOMContentLoaded', () => {
    function printSysMsg(message) {
         var p = document.createElement('p');
         p.setAttribute("class", "system-msg");
-        p.innerHTML = '<i>' + message + '</i>';
-        //document.querySelector('#display-message-section').append(p);
+        p.innerHTML = '<i><b>' + message + '</b></i>';
+        document.querySelector('#display-message-section').append(p);
    }
 })
 
 function deleteRoom(room) {
-    console.log(room);
     var wantToDelete = confirm('Are you sure you want to delete this room?');
     if(wantToDelete) {
         var xhr = new XMLHttpRequest();
@@ -73,4 +71,15 @@ function deleteRoom(room) {
         window.location.reload();
 
   }
+}
+
+function clearRoom(room) {
+    var wantToClear = confirm('Are you sure you want to clear the chat of this room?');
+    if(wantToClear) {
+        var xhr = new XMLHttpRequest();
+        sender = JSON.stringify({'room': room});
+        xhr.open('POST', '/clear-room');
+        xhr.send(sender);
+        window.location.reload();
+    }
 }

@@ -12,7 +12,7 @@ def index():
 
 @views.route("/chat", methods=["GET", "POST"])
 def chat():
-    lobby_room =  Room.query.filter_by(room_name="Lobby").first()
+    lobby_room = Room.query.filter_by(room_name="Lobby").first()
     if not lobby_room:
         lobby_room = Room(room_name="Lobby")
         db.session.add(lobby_room)
@@ -22,11 +22,6 @@ def chat():
     if current_user not in lobby_room.members:
         lobby_room.members.append(current_user)
         db.session.commit()
-
-    print(current_user.authored_messages)
-
-    for message in current_user.messages:
-        print(message)
 
     return render_template("chat.html", user=current_user, rooms=current_user.rooms, current_room=Room.query.filter_by(room_name=session["current_room"]).first())
 
@@ -66,3 +61,19 @@ def delete_room():
         db.session.commit()
         flash(f"successfully deleted {room}", category="success")
     return redirect(url_for("views.index"))
+
+@views.route("/clear-room", methods=["POST"])
+@login_required
+def clear_room():
+    data = request.data
+    dict = data.decode("UTF-8")
+    data = ast.literal_eval(dict)
+    room = data["room"]
+    room_db = Room.query.filter_by(room_name=room).first()
+    if room_db.owner == current_user.username:
+        for message in room_db.messages:
+            db.session.delete(message)
+        db.session.commit()
+        flash(f"Successfully cleared {room}", category="success")
+    return redirect(url_for("views.index"))
+
