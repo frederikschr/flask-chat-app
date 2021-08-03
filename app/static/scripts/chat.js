@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         var p = document.createElement('p');
         p.setAttribute("class", "system-msg");
         p.innerHTML = '<i>' + message + '</i>';
-        document.querySelector('#display-message-section').append(p);
+        //document.querySelector('#display-message-section').append(p);
    }
 })
 

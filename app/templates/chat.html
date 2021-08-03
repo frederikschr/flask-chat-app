@@ -21,12 +21,16 @@
             {% endfor %}
         </div>
 
+        <div id="clear-chat-history">
+    
+
+        </div>
+
         <div style="color: black;" id="display-message-section">
             {% for message in current_room.messages %}
                 {% if message in user.messages %}
-
                     {% if message.is_system_message %}
-                        <p><i>{{ message.content }}</i></p>
+                        <p><i><b>{{ message.content }}</b></i></p>
                     {% else %}
                         {% if message.author == user.username %}
                             <p style="color: red;">{{ message.author }}: {{ message.content }}</p>
