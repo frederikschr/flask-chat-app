@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, url_for, redirect, session, current_app
+from flask import Blueprint, render_template, flash, url_for, redirect, session
 from flask_login import login_user, logout_user, current_user, login_required
 from .wtform_fields import RegistrationForm, LoginForm
 from werkzeug.security import generate_password_hash, check_password_hash

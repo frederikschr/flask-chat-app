@@ -16,7 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
             var p = document.createElement('p');
             var br = document.createElement('br');
             p.innerHTML = data['username'] + ": " + data['message'];
-            p.style.color = "red";
+            if(data['username'] == username) {
+                p.style.color = "red";
+            }
             document.querySelector('#display-message-section').append(p);
       })
 
@@ -78,6 +80,17 @@ function clearRoom(room) {
         var xhr = new XMLHttpRequest();
         sender = JSON.stringify({'room': room});
         xhr.open('POST', '/clear-room');
+        xhr.send(sender);
+        window.location.reload();
+    }
+}
+
+function removeMember(member, room) {
+    var wantToRemove = confirm('Are you sure you want to remove ' + member + ' from this room?');
+    if(wantToRemove) {
+        var xhr = new XMLHttpRequest();
+        sender = JSON.stringify({'member': member, 'room': room});
+        xhr.open('POST', '/remove-member');
         xhr.send(sender);
         window.location.reload();
     }

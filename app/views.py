@@ -77,3 +77,19 @@ def clear_room():
         flash(f"Successfully cleared {room}", category="success")
     return redirect(url_for("views.index"))
 
+@views.route("/remove-member", methods=["POST"])
+@login_required
+def remove_member():
+    data = request.data
+    dict = data.decode("UTF-8")
+    data = ast.literal_eval(dict)
+    member, room = data["member"], data["room"]
+    room_db = Room.query.filter_by(room_name=room).first()
+    member_db = User.query.filter_by(username=member).first()
+    if current_user.username == room_db.owner:
+        room_db.members.remove(member_db)
+        db.session.commit()
+        flash(f"Successfully removed {member} from {room}", category="success")
+    return redirect(url_for("views.chat"))
+
+
