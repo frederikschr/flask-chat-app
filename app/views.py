@@ -19,10 +19,12 @@ def chat():
         for user in User.query.all():
             lobby_room.members.append(user)
         db.session.commit()
-    if current_user not in lobby_room.members:
+    elif current_user not in lobby_room.members:
         lobby_room.members.append(current_user)
         db.session.commit()
-
+    elif len(lobby_room.messages) >= 100:
+        db.session.delete(lobby_room.messages[0])
+        db.session.commit()
     return render_template("chat.html", user=current_user, rooms=current_user.rooms, current_room=Room.query.filter_by(room_name=session["current_room"]).first())
 
 @views.route("/create-room", methods=["GET", "POST"])
@@ -40,11 +42,9 @@ def create_room():
             db.session.commit()
             flash(f"{room_name} was created successfully", category="success")
             return redirect(url_for("views.chat"))
-
         else:
             for error in room_form.errors.values():
                 flash(error[0], category="error")
-
         return render_template("create_room.html", user=current_user, form=room_form)
     return redirect(url_for("views.index"))
 

@@ -26,12 +26,16 @@ def on_message(msg):
         create_message(user, message, room)
         send({"message": message, "username": user}, room=room)
 
+@socketio.on('room-change')
+def on_room_change(data):
+    room = data["room"]
+    session["current_room"] = room
+
 @socketio.on('join')
 def on_join(data):
     user = data["username"]
     room = data["room"]
     join_room(room)
-    session["current_room"] = room
     message = f"{user} has joined the {room} room"
     create_message(None, message, room, is_system_message=True)
     emit("room-manager", {"message": message}, room=room)

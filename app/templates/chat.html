@@ -12,7 +12,6 @@
 
 
 <div class="container">
-
         <div style="color: black;" id="current_room">{{current_room.room_name}}</div>
 
         <div style="color: black;" id="display-room-user">
@@ -25,7 +24,6 @@
             {% if current_room.owner == user.username %}
                 <button onclick="clearRoom('{{current_room.room_name}}')">Clear</button>
             {% endif %}
-
         </div>
 
         <div style="color: black;" id="display-message-section">

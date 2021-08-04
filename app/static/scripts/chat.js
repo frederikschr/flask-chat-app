@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     var username = document.querySelector('#get-username').innerHTML;
 
     var room = document.querySelector('#current_room').innerHTML;
+
     joinRoom(room);
 
     socket.on('connect', function() {
@@ -19,11 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('#display-message-section').append(p);
       })
 
-     socket.on('room-manager', data => {
-        printSysMsg(data['message']);
-     })
-
-    //Send button clicked
     document.querySelector('#send_message').onclick = () => {
     socket.send({'message': document.querySelector('#user_message').value, 'username': username, 'room': room});
     document.querySelector('#user_message').value = '';
@@ -37,13 +33,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             else {
                 leaveRoom(room);
-                joinRoom(newRoom);
+                socket.emit('room-change', {'room': newRoom})
                 setTimeout(function() {
                     location.reload();
                     }, 50);
             }
         }
     })
+
+     socket.on('room-manager', data => {
+        printSysMsg(data['message']);
+     })
 
     function joinRoom(room) {
         socket.emit('join', {'username': username, 'room': room})
@@ -69,7 +69,6 @@ function deleteRoom(room) {
         xhr.open('POST', '/delete-room');
         xhr.send(sender);
         window.location.reload();
-
   }
 }
 
