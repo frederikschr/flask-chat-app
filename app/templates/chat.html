@@ -56,7 +56,6 @@
                 {% if room.owner == user.username %}
                     <button style="color: red;" class="select-room" type="button">{{room.room_name}}</button>
                     <button onclick="deleteRoom('{{room.room_name}}')">X</button>
-
                 {% else %}
                     <button class="select-room" type="button">{{room.room_name}}</button>
                 {% endif %}

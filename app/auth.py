@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, url_for, redirect, session
+from flask import Blueprint, render_template, flash, url_for, redirect, session, request
 from flask_login import login_user, logout_user, current_user, login_required
 from .wtform_fields import RegistrationForm, LoginForm
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -39,6 +39,7 @@ def sign_up():
 
 @auth.route("/login", methods=["GET", "POST"])
 def login():
+
     login_form = LoginForm()
 
     if login_form.validate_on_submit():

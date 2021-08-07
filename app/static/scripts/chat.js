@@ -1,15 +1,29 @@
+var baseURL = location.protocol + '//' + document.domain + ':' + location.port;
+var socket = io.connect(baseURL);
+
 document.addEventListener('DOMContentLoaded', () => {
-    var baseURL = location.protocol + '//' + document.domain + ':' + location.port;
-    var socket = io.connect(baseURL);
 
     var username = document.querySelector('#get-username').innerHTML;
-
     var room = document.querySelector('#current_room').innerHTML;
 
     joinRoom(room);
 
     socket.on('connect', function() {
         console.log('Connected to server');
+    })
+
+    socket.on('refresh', function() {
+         location.reload();
+    })
+
+    socket.on('kick', data => {
+        if(data['member'] == username) {
+            leaveRoom(room);
+            socket.emit('room-change', {'room': 'Lobby'})
+            setTimeout(function() {
+                location.reload();
+                }, 1000);
+        }
     })
 
     socket.on('message', data => {
@@ -92,6 +106,7 @@ function removeMember(member, room) {
         sender = JSON.stringify({'member': member, 'room': room});
         xhr.open('POST', '/remove-member');
         xhr.send(sender);
-        window.location.reload();
+        socket.emit('member-removed', {'user': document.querySelector('#get-username').innerHTML, 'member': member, 'room': room});
     }
 }
+
