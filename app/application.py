@@ -5,8 +5,7 @@ from flask_login import current_user
 from .models import *
 
 socketio = SocketIO(app, manage_session=False)
-
-
+client_sid = {}
 
 def create_message(author, content, room, is_system_message=False):
     message = Message(author=author, content=content, room_id=Room.query.filter_by(room_name=room).first().id, is_system_message=is_system_message)
@@ -17,16 +16,11 @@ def create_message(author, content, room, is_system_message=False):
 
 @socketio.on('connect')
 def on_connect():
-
-    print(request.sid)
-
-    print("Client connected")
+    if current_user.is_authenticated:
+        client_sid[current_user.username] = request.sid
 
 @socketio.on('message')
 def on_message(msg):
-
-    print(request.sid)
-
     if current_user.is_authenticated:
         user = msg["username"]
         message = msg["message"]
@@ -34,16 +28,22 @@ def on_message(msg):
         create_message(user, message, room)
         send({"message": message, "username": user}, room=room)
 
-@socketio.on("member-removed")
+@socketio.on('member-removed')
 def on_member_removed(data):
-    user = data["user"]
+    user = current_user.username
     member = data["member"]
     room = data["room"]
     message = f"{user} has removed {member} from {room}"
     emit("room-manager", {"message": message}, room=room)
     create_message(None, message, room, is_system_message=True)
-    emit("kick", {'member': member}, broadcast=True)
+    emit("room-leave", room=client_sid[member])
+    emit("refresh", room=room)
 
+@socketio.on('room-deleted')
+def on_room_deleted(data):
+    room = data["room"]
+    emit("room-leave", room=room)
+    emit("refresh")
 
 @socketio.on('room-change')
 def on_room_change(data):

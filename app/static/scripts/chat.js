@@ -13,18 +13,19 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     socket.on('refresh', function() {
-         location.reload();
+        setTimeout(function() {
+        location.reload();
+        }, 1000);
     })
 
-    socket.on('kick', data => {
-        if(data['member'] == username) {
-            leaveRoom(room);
-            socket.emit('room-change', {'room': 'Lobby'})
-            setTimeout(function() {
-                location.reload();
-                }, 1000);
-        }
-    })
+    socket.on('room-leave', function() {
+        leaveRoom(room);
+        socket.emit('room-change', {'room': 'Lobby'})
+        setTimeout(function() {
+            location.reload();
+            }, 1000);
+        })
+
 
     socket.on('message', data => {
             var p = document.createElement('p');
@@ -35,6 +36,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             document.querySelector('#display-message-section').append(p);
       })
+
+    socket.on('room-manager', data => {
+        printSysMsg(data['message']);
+     })
 
     document.querySelector('#send_message').onclick = () => {
     socket.send({'message': document.querySelector('#user_message').value, 'username': username, 'room': room});
@@ -56,10 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     })
-
-     socket.on('room-manager', data => {
-        printSysMsg(data['message']);
-     })
 
     function joinRoom(room) {
         socket.emit('join', {'username': username, 'room': room})
@@ -84,7 +85,7 @@ function deleteRoom(room) {
         sender = JSON.stringify({'room': room});
         xhr.open('POST', '/delete-room');
         xhr.send(sender);
-        window.location.reload();
+        socket.emit('room-deleted', {'room': room})
   }
 }
 
@@ -106,7 +107,7 @@ function removeMember(member, room) {
         sender = JSON.stringify({'member': member, 'room': room});
         xhr.open('POST', '/remove-member');
         xhr.send(sender);
-        socket.emit('member-removed', {'user': document.querySelector('#get-username').innerHTML, 'member': member, 'room': room});
+        socket.emit('member-removed', {'member': member, 'room': room});
     }
 }
 
