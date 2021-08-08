@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('refresh', function() {
         setTimeout(function() {
         location.reload();
-        }, 1000);
+        }, 100);
     })
 
     socket.on('room-leave', function() {

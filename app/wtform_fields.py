@@ -23,7 +23,6 @@ class LoginForm(FlaskForm):
     username = StringField('username', validators=[InputRequired(message="Username required"), Length(min=4, max=10, message="Username must be between 4 and 10 characters")])
     password = PasswordField('password', validators=[InputRequired(message="Password required"), Length(min=6, max=14, message="Password must be between 6 and 14 characters")])
 
-
 class UserForm(FlaskForm):
     username = StringField('username', validators=[InputRequired(message="Username required"), Length(min=4, max=10, message="Username must be between 4 and 10 characters")])
 
@@ -31,8 +30,8 @@ class RoomForm(FlaskForm):
     room_name = StringField('room_name', validators=[InputRequired(message="Room name required"), Length(min=4, max=20, message="Room name must be between 4 and 20 characters")])
     users = StringField('users')
 
-    def validate_room(self, room_name):
-        room = Room.query.filter_by(room_name=room_name).first()
+    def validate_room_name(self, room_name):
+        room = Room.query.filter_by(room_name=room_name.data).first()
         if room:
             raise ValidationError("Room already exists")
 

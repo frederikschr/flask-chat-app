@@ -26,6 +26,8 @@
         <div id="clear-room">
             {% if current_room.owner == user.username %}
                 <button onclick="clearRoom('{{current_room.room_name}}')">Clear</button>
+                <input placeholder="Member">
+                <button onclick="addMember();">Add Member</button>
             {% endif %}
         </div>
 
