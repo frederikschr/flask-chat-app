@@ -1,6 +1,12 @@
 var baseURL = location.protocol + '//' + document.domain + ':' + location.port;
 var socket = io.connect(baseURL);
 
+function reload(delay) {
+     setTimeout(function() {
+        location.reload();
+        }, delay);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
     var username = document.querySelector('#get-username').innerHTML;
@@ -13,19 +19,14 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     socket.on('refresh', function() {
-        setTimeout(function() {
-        location.reload();
-        }, 100);
+        reload(500);
     })
 
     socket.on('room-leave', function() {
         leaveRoom(room);
         socket.emit('room-change', {'room': 'Lobby'})
-        setTimeout(function() {
-            location.reload();
-            }, 1000);
-        })
-
+        reload(200);
+    })
 
     socket.on('message', data => {
             var p = document.createElement('p');
@@ -55,19 +56,17 @@ document.addEventListener('DOMContentLoaded', () => {
             else {
                 leaveRoom(room);
                 socket.emit('room-change', {'room': newRoom})
-                setTimeout(function() {
-                    location.reload();
-                    }, 50);
+                reload(50);
             }
         }
     })
 
     function joinRoom(room) {
-        socket.emit('join', {'username': username, 'room': room})
+        socket.emit('join', {'username': username, 'room': room});
     }
 
     function leaveRoom(room) {
-        socket.emit('leave', {'username': username,'room': room})
+        socket.emit('leave', {'username': username,'room': room});
     }
 
    function printSysMsg(message) {
@@ -78,6 +77,15 @@ document.addEventListener('DOMContentLoaded', () => {
    }
 })
 
+function addMember(room) {
+    var newMember = document.getElementById('added-member').value;
+    var xhr = new XMLHttpRequest();
+    sender = JSON.stringify({'new_member': newMember, 'room': room});
+    xhr.open('POST', '/add-member');
+    xhr.send(sender);
+    socket.emit('member-added', {'new_member': newMember, 'room': room})
+}
+
 function deleteRoom(room) {
     var wantToDelete = confirm('Are you sure you want to delete this room?');
     if(wantToDelete) {
@@ -86,6 +94,7 @@ function deleteRoom(room) {
         xhr.open('POST', '/delete-room');
         xhr.send(sender);
         socket.emit('room-deleted', {'room': room})
+        reload(50);
   }
 }
 
@@ -96,7 +105,7 @@ function clearRoom(room) {
         sender = JSON.stringify({'room': room});
         xhr.open('POST', '/clear-room');
         xhr.send(sender);
-        window.location.reload();
+        socket.emit('room-cleared', {'room': room})
     }
 }
 
@@ -110,4 +119,3 @@ function removeMember(member, room) {
         socket.emit('member-removed', {'member': member, 'room': room});
     }
 }
-

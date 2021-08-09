@@ -28,6 +28,15 @@ def on_message(msg):
         create_message(user, message, room)
         send({"message": message, "username": user}, room=room)
 
+@socketio.on("member-added")
+def on_member_added(data):
+    room = data["room"]
+    new_member = data["new_member"]
+    if User.query.filter_by(username=new_member).first():
+        if new_member in client_sid:
+            emit("refresh", room=client_sid[new_member])
+        emit("refresh", room=room)
+
 @socketio.on('member-removed')
 def on_member_removed(data):
     user = current_user.username
@@ -36,19 +45,24 @@ def on_member_removed(data):
     message = f"{user} has removed {member} from {room}"
     emit("room-manager", {"message": message}, room=room)
     create_message(None, message, room, is_system_message=True)
-    emit("room-leave", room=client_sid[member])
+    if member in client_sid:
+        emit("room-leave", room=client_sid[member])
     emit("refresh", room=room)
 
 @socketio.on('room-deleted')
 def on_room_deleted(data):
     room = data["room"]
     emit("room-leave", room=room)
-    emit("refresh")
 
 @socketio.on('room-change')
 def on_room_change(data):
     room = data["room"]
     session["current_room"] = room
+
+@socketio.on('room-cleared')
+def on_room_cleared(data):
+    room = data["room"]
+    emit("refresh", room=room)
 
 @socketio.on('join')
 def on_join(data):
