@@ -37,6 +37,8 @@ def create_room():
             room_name = room_form.room_name.data
             room = Room(room_name=room_name, owner=current_user.username)
             db.session.add(room)
+            if current_user not in users:
+                room.members.append(current_user)
             for user in users:
                 user = User.query.filter_by(username=user).first()
                 room.members.append(user)

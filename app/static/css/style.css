@@ -104,10 +104,17 @@
     cursor: pointer;
 }
 
-.index {
+.index, .login, .sign-up, .create-room {
     position: relative;
-    top: 60px;
+    top: 50px;
+    text-align: center;
 }
+
+.login {
+    margin: 50px;
+    text-align: center;
+}
+
 
 .content h1 {
     font-size: 40px;

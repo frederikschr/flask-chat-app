@@ -10,7 +10,7 @@ function reload(delay) {
 document.addEventListener('DOMContentLoaded', () => {
 
     var username = document.querySelector('#get-username').innerHTML;
-    var room = document.querySelector('#current_room').innerHTML;
+    var room = document.getElementById('get-room').innerHTML;
 
     joinRoom(room);
 

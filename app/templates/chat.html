@@ -2,36 +2,47 @@
 {% from 'field-macro.html' import displayField %}
 {% block content %}
 
-
 <h1 class="chat-heading">Chat</h1>
 
 <head>
     <script type="text/javascript" src="../static/scripts/chat.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="../static/css/chat.css">
 </head>
 
-
 <div class="container">
-        <div style="color: black;" id="current_room">{{current_room.room_name}}</div>
+        <div id="display-current-room">
+            <h2>Room</h2><br>
+            <p id="get-room">{{current_room.room_name}}</p>
+        </div>
 
-        <div style="color: black;" id="display-room-user">
+        <div id="display-room-members">
+            <h3 align="center">Members</h3><br>
+            <ul class="member-list">
             {% for member in current_room.members %}
-                {{member.username}}
+                {% if member.username == user.username %}
+                    <li style="color: red;">{{member.username}}</li>
+                {% else %}
+                    <li>{{member.username}}</li>
+                {% endif %}
                 {% if user.username == current_room.owner and member.username != user.username %}
                     <button onclick="removeMember('{{member.username}}', '{{current_room.room_name}}')">X</button>
                 {% endif %}
             {% endfor %}
+            </ul>
         </div>
 
-        <div id="clear-room">
+        <div id="manage-room">
             {% if current_room.owner == user.username %}
-                <button onclick="clearRoom('{{current_room.room_name}}')">Clear</button>
+                <h3 align="center">Manage</h3>
+                <button  onclick="clearRoom('{{current_room.room_name}}')">Clear</button><br>
                 <input id="added-member" placeholder="Member">
                 <button onclick="addMember('{{current_room.room_name}}');">Add Member</button>
             {% endif %}
         </div>
 
-        <div style="color: black;" id="display-message-section">
+        <div id="display-message-section">
             {% for message in current_room.messages %}
                 {% if message in user.messages %}
                     {% if message.is_system_message %}
@@ -53,7 +64,7 @@
         </div>
 
         <div id="room-section">
-            <p style="color: white;" >Rooms</p>
+            <p>Rooms</p>
             {% for room in rooms %}
                 {% if room.owner == user.username %}
                     <button style="color: red;" class="select-room" type="button">{{room.room_name}}</button>
@@ -64,7 +75,7 @@
             {% endfor %}
         </div>
 
-        <div style="color: black;" id="get-username">{{user.username}}</div>
+        <div id="get-username">{{user.username}}</div>
 
 </div>
 

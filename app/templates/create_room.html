@@ -1,24 +1,17 @@
 {% extends "base.html" %} {% block title %} Create Room {% endblock %}
 {% from 'field-macro.html' import displayField %}
 {% block content %}
+  <div class="create-room">
+      <form method="POST">
+        <div class="form-group">
+            {{displayField(form.room_name, 'Room name')}}
+            {{displayField(form.users, 'Users')}}
 
-  <form method="POST">
-    <div class="form-group">
+            <button type="submit">Create</button>
 
-        {{displayField(form.room_name, 'Room name')}}
-        {{displayField(form.users, 'Users')}}
-
-        <br><br><input type="submit" value="Create">
-
-        {{ form.csrf_token }}
-
-    </div>
-
-  </form>
-
-
-
-
-
+            {{ form.csrf_token }}
+        </div>
+      </form>
+  </div>
 
 {% endblock %}
