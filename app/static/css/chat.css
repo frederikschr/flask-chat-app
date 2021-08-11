@@ -19,7 +19,7 @@
     justify-self: center;
 }
 
-.member-list {
+.member-list, .room-list {
     list-style: none;
 }
 
@@ -27,6 +27,12 @@
     display: inline-block;
     margin: 0 10px;
 }
+
+.room-list li {
+    text-align: center;
+    margin: 10px 0;
+}
+
 #display-message-section {
     grid-area: message;
     height: 500px;
@@ -49,8 +55,37 @@
 
 #room-section {
     grid-area: rooms;
+    text-align: center;
 }
 
 #get-username {
     display: none;
+}
+
+@media (max-width: 1000px) {
+    .container {
+        grid-template-columns: auto;
+        grid-template-rows: 50% auto; auto auto auto auto;
+        grid-template-areas:
+            "message"
+            "input"
+            "room"
+            "members"
+            "manage"
+            "rooms"
+    }
+
+    .room-list li{
+        display: inline-block;
+    }
+
+    h2, h3 {
+        font-size: 20px;
+    }
+
+    #manage-room, #room-section {
+        margin-top: 20px;
+    }
+
+
 }

@@ -2,7 +2,7 @@
 {% from 'field-macro.html' import displayField %}
 {% block content %}
 
-<h1 class="chat-heading">Chat</h1>
+<h1 class="chat-heading">Chat</h1><br>
 
 <head>
     <script type="text/javascript" src="../static/scripts/chat.js"></script>
@@ -64,15 +64,20 @@
         </div>
 
         <div id="room-section">
-            <p>Rooms</p>
+            <h2 align="center">Rooms</h2><br>
+            <ul class="room-list">
             {% for room in rooms %}
+                <li>
                 {% if room.owner == user.username %}
                     <button style="color: red;" class="select-room" type="button">{{room.room_name}}</button>
                     <button onclick="deleteRoom('{{room.room_name}}')">X</button>
                 {% else %}
                     <button class="select-room" type="button">{{room.room_name}}</button>
                 {% endif %}
+                </li>
+
             {% endfor %}
+            </ul>
         </div>
 
         <div id="get-username">{{user.username}}</div>
