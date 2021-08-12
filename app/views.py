@@ -37,7 +37,7 @@ def create_room():
             room_name = room_form.room_name.data
             room = Room(room_name=room_name, owner=current_user.username)
             db.session.add(room)
-            if current_user not in users:
+            if current_user.username not in users:
                 room.members.append(current_user)
             for user in users:
                 user = User.query.filter_by(username=user).first()
@@ -51,70 +51,6 @@ def create_room():
         return render_template("create_room.html", user=current_user, form=room_form)
     return redirect(url_for("views.index"))
 
-@views.route("/delete-room", methods=["POST"])
-@login_required
-def delete_room():
-    data = request.data
-    dict = data.decode("UTF-8")
-    data = ast.literal_eval(dict)
-    room = data["room"]
-    room_db = Room.query.filter_by(room_name=room).first()
-    if room_db.owner == current_user.username:
-        db.session.delete(room_db)
-        db.session.commit()
-        flash(f"successfully deleted {room}", category="success")
-    return redirect(url_for("views.index"))
-
-@views.route("/clear-room", methods=["POST"])
-@login_required
-def clear_room():
-    data = request.data
-    dict = data.decode("UTF-8")
-    data = ast.literal_eval(dict)
-    room = data["room"]
-    room_db = Room.query.filter_by(room_name=room).first()
-    if room_db.owner == current_user.username:
-        for message in room_db.messages:
-            db.session.delete(message)
-        db.session.commit()
-        flash(f"Successfully cleared {room}", category="success")
-    return redirect(url_for("views.index"))
-
-@views.route("/remove-member", methods=["POST"])
-@login_required
-def remove_member():
-    data = request.data
-    dict = data.decode("UTF-8")
-    data = ast.literal_eval(dict)
-    member, room = data["member"], data["room"]
-    room_db = Room.query.filter_by(room_name=room).first()
-    member_db = User.query.filter_by(username=member).first()
-    if current_user.username == room_db.owner:
-        room_db.members.remove(member_db)
-        db.session.commit()
-        flash(f"Successfully removed {member} from {room}", category="success")
-    return redirect(url_for("views.chat"))
-
-@views.route("/add-member", methods=["POST"])
-@login_required
-def add_member():
-    data = request.data
-    dict = data.decode("UTF-8")
-    data = ast.literal_eval(dict)
-    new_member, room = data["new_member"], data["room"]
-    room_db = Room.query.filter_by(room_name=room).first()
-    new_member_db = User.query.filter_by(username=new_member).first()
-    if new_member_db:
-        if current_user.username == room_db.owner:
-            if room_db not in new_member_db.rooms:
-                room_db.members.append(new_member_db)
-                db.session.commit()
-                flash(f"Successfully added {new_member} to {room}", category="success")
-            else:
-                flash(f"{new_member} is already in {room}", category="error")
-    else:
-        flash(f"No user named {new_member}", category="error")
-    return redirect(url_for("views.chat"))
 
 
 

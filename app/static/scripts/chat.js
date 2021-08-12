@@ -79,32 +79,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function addMember(room) {
     var newMember = document.getElementById('added-member').value;
-    var xhr = new XMLHttpRequest();
-    sender = JSON.stringify({'new_member': newMember, 'room': room});
-    xhr.open('POST', '/add-member');
-    xhr.send(sender);
     socket.emit('member-added', {'new_member': newMember, 'room': room})
 }
 
 function deleteRoom(room) {
-    var wantToDelete = confirm('Are you sure you want to delete this room?');
+    var wantToDelete = confirm('Are you sure you want to clear the chat of this room?');
     if(wantToDelete) {
-        var xhr = new XMLHttpRequest();
-        sender = JSON.stringify({'room': room});
-        xhr.open('POST', '/delete-room');
-        xhr.send(sender);
         socket.emit('room-deleted', {'room': room})
-        reload(50);
-  }
+    }
 }
 
 function clearRoom(room) {
     var wantToClear = confirm('Are you sure you want to clear the chat of this room?');
     if(wantToClear) {
-        var xhr = new XMLHttpRequest();
-        sender = JSON.stringify({'room': room});
-        xhr.open('POST', '/clear-room');
-        xhr.send(sender);
         socket.emit('room-cleared', {'room': room})
     }
 }
@@ -112,10 +99,6 @@ function clearRoom(room) {
 function removeMember(member, room) {
     var wantToRemove = confirm('Are you sure you want to remove ' + member + ' from this room?');
     if(wantToRemove) {
-        var xhr = new XMLHttpRequest();
-        sender = JSON.stringify({'member': member, 'room': room});
-        xhr.open('POST', '/remove-member');
-        xhr.send(sender);
         socket.emit('member-removed', {'member': member, 'room': room});
     }
 }

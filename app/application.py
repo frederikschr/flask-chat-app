@@ -1,4 +1,4 @@
-from flask import session, request
+from flask import session, request, flash
 from flask_socketio import SocketIO, emit, send, join_room, leave_room
 from app import app
 from flask_login import current_user
@@ -30,29 +30,49 @@ def on_message(msg):
 
 @socketio.on("member-added")
 def on_member_added(data):
-    room = data["room"]
-    new_member = data["new_member"]
-    if User.query.filter_by(username=new_member).first():
-        if new_member in client_sid:
-            emit("refresh", room=client_sid[new_member])
-        emit("refresh", room=room)
+    new_member, room = data["new_member"], data["room"]
+    room_db = Room.query.filter_by(room_name=room).first()
+    new_member_db = User.query.filter_by(username=new_member).first()
+    if new_member_db:
+        if current_user.username == room_db.owner:
+            if room_db not in new_member_db.rooms:
+                room_db.members.append(new_member_db)
+                db.session.commit()
+                flash(f"Successfully added {new_member} to {room}", category="success")
+                if new_member in client_sid:
+                    emit("refresh", room=client_sid[new_member])
+                emit("refresh", room=room)
+            else:
+                flash(f"{new_member} is already in {room}", category="error")
+    else:
+        flash(f"No user named {new_member}", category="error")
 
 @socketio.on('member-removed')
 def on_member_removed(data):
     user = current_user.username
-    member = data["member"]
-    room = data["room"]
-    message = f"{user} has removed {member} from {room}"
-    emit("room-manager", {"message": message}, room=room)
-    create_message(None, message, room, is_system_message=True)
-    if member in client_sid:
-        emit("room-leave", room=client_sid[member])
-    emit("refresh", room=room)
+    member, room = data["member"], data["room"]
+    room_db = Room.query.filter_by(room_name=room).first()
+    member_db = User.query.filter_by(username=member).first()
+    if current_user.username == room_db.owner:
+        room_db.members.remove(member_db)
+        db.session.commit()
+        flash(f"Successfully removed {member} from {room}", category="success")
+        message = f"{user} has removed {member} from {room}"
+        emit("room-manager", {"message": message}, room=room)
+        create_message(None, message, room, is_system_message=True)
+        if member in client_sid:
+            emit("room-leave", room=client_sid[member])
+        emit("refresh", room=room)
 
 @socketio.on('room-deleted')
 def on_room_deleted(data):
     room = data["room"]
-    emit("room-leave", room=room)
+    room_db = Room.query.filter_by(room_name=room).first()
+    if room_db.owner == current_user.username:
+        db.session.delete(room_db)
+        db.session.commit()
+        flash(f"successfully deleted {room}", category="success")
+        emit("room-leave", room=room)
 
 @socketio.on('room-change')
 def on_room_change(data):
@@ -62,7 +82,13 @@ def on_room_change(data):
 @socketio.on('room-cleared')
 def on_room_cleared(data):
     room = data["room"]
-    emit("refresh", room=room)
+    room_db = Room.query.filter_by(room_name=room).first()
+    if room_db.owner == current_user.username:
+        for message in room_db.messages:
+            db.session.delete(message)
+        db.session.commit()
+        flash(f"Successfully cleared {room}", category="success")
+        emit("refresh", room=room)
 
 @socketio.on('join')
 def on_join(data):

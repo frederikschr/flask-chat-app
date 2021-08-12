@@ -65,7 +65,7 @@
 @media (max-width: 1000px) {
     .container {
         grid-template-columns: auto;
-        grid-template-rows: 50% auto; auto auto auto auto;
+        grid-template-rows: 50% auto auto auto auto auto;
         grid-template-areas:
             "message"
             "input"
@@ -75,16 +75,16 @@
             "rooms"
     }
 
+    #display-message-section {
+        height: 300px;
+    }
+
     .room-list li{
         display: inline-block;
     }
 
     h2, h3 {
         font-size: 20px;
-    }
-
-    #manage-room, #room-section {
-        margin-top: 20px;
     }
 
 
