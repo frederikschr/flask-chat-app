@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             p.innerHTML = data['username'] + ": " + data['message'];
             if(data['username'] == username) {
                 p.style.color = "red";
+                p.setAttribute("class", "own-message");
             }
             document.querySelector('#display-message-section').append(p);
       })
