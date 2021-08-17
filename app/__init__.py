@@ -4,7 +4,7 @@ from flask_login import LoginManager
 from .models import *
 from flask_restful import Api
 from .resources import jwt
-from .resources.api import *
+from .resources import *
 from os import path
 
 app = Flask(__name__)
