@@ -221,6 +221,10 @@ button:hover {
         font-size: 25px;
     }
 
+    .content h2 {
+        font-size: 18px;
+    }
+
     .content p {
         font-size: 12px;
     }

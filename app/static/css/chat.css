@@ -39,10 +39,6 @@
     overflow: auto;
 }
 
-.own-message {
-    float: left;
-}
-
 #manage-room {
     grid-area: manage;
     text-align: center;

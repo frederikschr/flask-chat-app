@@ -9,6 +9,10 @@ views = Blueprint("views", __name__)
 def index():
     return render_template("index.html", user=current_user)
 
+@views.route("/about", methods=["GET"])
+def about():
+    return render_template("about.html", user=current_user)
+
 @views.route("/chat", methods=["GET", "POST"])
 def chat():
     lobby_room = Room.query.filter_by(room_name="Lobby").first()

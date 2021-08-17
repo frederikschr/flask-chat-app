@@ -1,0 +1,27 @@
+{% extends "base.html" %} {% block title %} Chat {% endblock %}
+{% block content %}
+    <h1>About</h1><br>
+        <div style="width: 75%; margin: auto; text-align: center;">
+            <h2 style="padding: 20px;"><i>What is F-Chat?</i></h2>
+                <p>F-Chat is a simple chat app made with the micro web framework <b>Flask</b> for the programming language
+                <b>Python</b><br>. It allows the user to communicate with other users trough individual chat rooms that he is
+                    able to create himself.<br> He can manage his created rooms at any time by adding a user, removing a user, clearing the room or completely deleting it.<br>
+                    F-Chat is <b>Open Source</b> and the Source Code can be found <a href="https://github.com/Freddy382/flask-chat-app">here</a>.
+                </p>
+            <h2 style="padding: 20px;"><i>How does F-Chat work?</i></h2>
+                <h3>Networking</h3>
+                <p>In order to establish a connection between the different users and the server, F-Chat uses the python module <b>Flask-SocketIO</b>.<br>
+                    It allows many clients to connect to the server which is then going to handle the different clients and group them into
+                    rooms. The server-side of the app <br> is written in <b>Python</b> and the client-browser-side in <b>JavaScript</b>.
+                    </br>The clients and the server are able to communicate through so-called events which are triggered based on  an action on the client side.
+                    When a user for example logs into the chat app, the join event on the client-side is triggered which it emits to the server-side using the Flask-SocketIO module. The server side <br>
+                    receives and handles it and then broadcasts it to the other users in the joined room.</p>
+                <h3>Data Saving</h3>
+                <p>All the data that the app needs are saved in a <b>SQLite</b> database which the server accesses and modifies using the python module <b>Flask-SQLAlchemy</b>.
+                    The database contains users, rooms and messages, which are accessed and changed during runtime.<b><u>The passwords of all users are hashed and are therefore not visible for the admin</u></b>.</p>
+                <h3>Session Management</h3>
+                <p>Data only relevant while the user is logged in is not saved in the Database. Instead, it is saved in the user session which is made with the <b>Flask-Session</b> python module
+                    It contains data about the current room the user is in as well as the username of the user which is used for rendering the HTML templates.</p>
+        </div>
+
+{% endblock %}
