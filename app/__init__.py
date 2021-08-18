@@ -12,7 +12,8 @@ app = Flask(__name__)
 def create_app():
     app.config["SECRET_KEY"] = "secret!"
     app.config["SESSION_TYPE"] = "filesystem"
-    app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_NAME}"
+    #app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_NAME}"
+    app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://uexcukzasfclmg:da858edf64eac5f84b68b52ffe4bd9e5d2edd2a1f70f112bc276cccc752c367e@ec2-52-17-1-206.eu-west-1.compute.amazonaws.com:5432/d2nmosuvfnmdam"
 
     login_manager = LoginManager(app)
 
@@ -36,7 +37,7 @@ def create_app():
     app.register_blueprint(views, url_prefix="/")
     app.register_blueprint(auth, url_prefix="/")
 
-    create_database(app)
+    #create_database(app)
 
     return socketio, app
 
