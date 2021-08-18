@@ -22,6 +22,22 @@
                 <h3>Session Management</h3>
                 <p>Data only relevant while the user is logged in is not saved in the Database. Instead, it is saved in the user session which is made with the <b>Flask-Session</b> python module
                     It contains data about the current room the user is in as well as the username of the user which is used for rendering the HTML templates.</p>
+            <h2 style="padding: 20px;">API</h2>
+                <p>F-Chat offers a simple API that can be used by every user. It offers an easy way to analyze the app's data by querying the database. <br>
+                    In order to use it, you need to get an <b>API token</b>. A description on how you can get this token can be found below.</p>
+                <h3>Endpoints</h3><br>
+                <ul style="list-style-type: none">
+                    <li>Get token: You need to pass your username as well as your password in json format<br><i>/api/token</i></li><br>
+                    <li>Get your hashed password: <i>/api/me</i></li>
+                    <li><i></i></li>
+                    <li><i></i></li>
+                    <li><i></i></li>
+
+
+                </ul>
+
+
+
         </div>
 
 {% endblock %}
