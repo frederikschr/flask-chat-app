@@ -9,7 +9,6 @@ gunicorn==19.9.0
 gevent
 gevent-websocket
 psycopg2
+psycopg2-binary
 werkzeug
 greenlet
-python-socketio
-python-engineio

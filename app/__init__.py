@@ -13,8 +13,8 @@ app = Flask(__name__)
 def create_app():
     app.config["SECRET_KEY"] = "secret!"
     app.config["SESSION_TYPE"] = "filesystem"
-    #app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_NAME}"
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+    #app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql+psycopg2://fredi:fcbayern@localhost:5432/F-Chat"
 
     login_manager = LoginManager(app)
 
@@ -38,7 +38,7 @@ def create_app():
     app.register_blueprint(views, url_prefix="/")
     app.register_blueprint(auth, url_prefix="/")
 
-    create_database(app)
+    #create_database(app)
 
     return socketio, app
 
@@ -53,6 +53,5 @@ def register_resources():
     api.add_resource(GetUserContent, "/api/message/<username>/<content>")
 
 def create_database(app):
-    if not path.exists(f"app/{DB_NAME}"):
-        db.create_all(app=app)
-        print("Created database")
+    db.create_all(app=app)
+    print("Created database")
