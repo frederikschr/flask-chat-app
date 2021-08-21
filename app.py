@@ -4,7 +4,8 @@ socketio, app = create_app()
 
 if __name__ == '__main__':
     #socketio.run(app, debug=True)
-    app.run()
+    with app.app_context():
+        app.run(debug=True)
 
 
 
