@@ -73,6 +73,8 @@ def on_room_deleted(data):
         db.session.commit()
         flash(f"successfully deleted {room}", category="success")
         emit("room-leave", room=room)
+        if not session["current_room"] == room:
+            emit("refresh")
 
 @socketio.on('room-change')
 def on_room_change(data):
