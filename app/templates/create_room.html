@@ -2,6 +2,7 @@
 {% from 'field-macro.html' import displayField %}
 {% block content %}
   <div class="create-room">
+      <script type="text/javascript" src="../static/scripts/chat.js"></script>
       <form method="POST">
         <div class="form-group">
             {{displayField(form.room_name, 'Room name')}}

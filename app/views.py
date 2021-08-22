@@ -3,6 +3,8 @@ from flask_login import current_user
 from .models import *
 from .wtform_fields import RoomForm
 
+from .socket import socketio, client_sid
+
 views = Blueprint("views", __name__)
 
 @views.route("/", methods=["GET", "POST"])
@@ -45,6 +47,7 @@ def create_room():
             for user in users:
                 user = User.query.filter_by(username=user).first()
                 room.members.append(user)
+                socketio.emit("refresh", room=client_sid[user.username])
             db.session.commit()
             flash(f"{room_name} was created successfully", category="success")
             return redirect(url_for("views.chat"))

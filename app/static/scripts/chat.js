@@ -80,20 +80,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function addMember(room) {
     var newMember = document.getElementById('added-member').value;
-    socket.emit('member-added', {'new_member': newMember, 'room': room})
+    socket.emit('member-added', {'new_member': newMember, 'room': room});
 }
 
 function deleteRoom(room) {
     var wantToDelete = confirm('Are you sure you want to clear the chat of this room?');
     if(wantToDelete) {
-        socket.emit('room-deleted', {'room': room})
+        socket.emit('room-deleted', {'room': room});
     }
 }
 
 function clearRoom(room) {
     var wantToClear = confirm('Are you sure you want to clear the chat of this room?');
     if(wantToClear) {
-        socket.emit('room-cleared', {'room': room})
+        socket.emit('room-cleared', {'room': room});
     }
 }
 
