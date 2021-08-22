@@ -12,7 +12,8 @@ app = Flask(__name__)
 def create_app():
     app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
     app.config["SESSION_TYPE"] = "filesystem"
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE")
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
+    app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI.replace("postgres://", "postgresql://", 1)
 
     login_manager = LoginManager(app)
 
