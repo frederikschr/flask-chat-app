@@ -4,7 +4,7 @@
         <div style="width: 75%; margin: auto; text-align: center;">
             <h2 style="padding: 20px;"><i>What is F-Chat?</i></h2>
                 <p>F-Chat is a simple chat app by <b>Frederik Schier</b>, made with the micro web framework <b>Flask</b> for the programming language
-                <b>Python</b><br>. It allows communication with other users through individual chat rooms that he is
+                <b>Python</b><br>. It allows communication with other users through individual chat rooms that the user is
                     able to create himself.<br> He can manage his created rooms at any time by adding a user, removing a user, clearing the room or completely deleting it.<br>
                     F-Chat is <b>Open Source</b> and the Source Code can be found <a href="https://github.com/Freddy382/flask-chat-app">here</a>.
                 </p>
@@ -17,11 +17,14 @@
                     When a user for example logs into the chat app, the join event on the client-side is triggered which it emits to the server-side using the Flask-SocketIO module. The server side <br>
                     receives and handles it and then broadcasts it to the other users in the joined room.</p>
                 <h3>Data Saving</h3>
-                <p>All the data that the app needs are saved in a <b>SQLite</b> database which the server accesses and modifies using the python module <b>Flask-SQLAlchemy</b>.
+                <p>All the data that the app needs are saved in a <b>PostgreSQL</b> database which the server accesses and modifies using the python module <b>Flask-SQLAlchemy</b>.
                     The database contains users, rooms and messages, which are accessed and changed during runtime.<b><u>The passwords of all users are hashed and are therefore not visible for the admin</u></b>.</p>
                 <h3>Session Management</h3>
                 <p>Data only relevant while the user is logged in is not saved in the Database. Instead, it is saved in the user session which is made with the <b>Flask-Session</b> python module
                     It contains data about the current room the user is in as well as the username of the user which is used for rendering the HTML templates.</p>
+                <h3>Hosting</h3>
+                <p>F-Chat is running on the cloud and is deployed on the cloud platform <b>Heroku</b>. During development times, it was hosted locally on the developer's machine but was then<br>
+                moved to the cloud for production. The cloud application gets the code from the projects GitHub repository and rebuilds the program as soon as changes are made to it.</p>
             <h2 style="padding: 20px;">API</h2>
                 <p>F-Chat offers a simple API that can be used by every user. It offers an easy way to analyze the app's data by querying the database. <br>
                     In order to use it, you need to get an <b>API token</b>. A description on how you can get this token can be found below.</p>
