@@ -47,7 +47,8 @@ def create_room():
             for user in users:
                 user = User.query.filter_by(username=user).first()
                 room.members.append(user)
-                socketio.emit("refresh", room=client_sid[user.username])
+                if user.username in client_sid:
+                    socketio.emit("refresh", room=client_sid[user.username])
             db.session.commit()
             flash(f"{room_name} was created successfully", category="success")
             return redirect(url_for("views.chat"))
