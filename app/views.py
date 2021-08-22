@@ -5,12 +5,9 @@ from .wtform_fields import RoomForm
 
 views = Blueprint("views", __name__)
 
-"""
 @views.route("/", methods=["GET", "POST"])
 def index():
     return render_template("index.html", user=current_user)
-    
-"""
 
 @views.route("/about", methods=["GET"])
 def about():
