@@ -10,11 +10,11 @@ import os
 app = Flask(__name__)
 
 def create_app():
-    #app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
-    app.config["SECRET_KEY"] = "secret!"
+    app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
+    #app.config["SECRET_KEY"] = "secret!"
     app.config["SESSION_TYPE"] = "filesystem"
-    #app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
-    app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://inlnknrtcojulh:37393be7c16b1a5910e8d62dbb036352a31770f2c7102df17657c577e64d3cc8@ec2-52-214-178-113.eu-west-1.compute.amazonaws.com:5432/d99127gk3g45hf"
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE")
+    #app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://inlnknrtcojulh:37393be7c16b1a5910e8d62dbb036352a31770f2c7102df17657c577e64d3cc8@ec2-52-214-178-113.eu-west-1.compute.amazonaws.com:5432/d99127gk3g45hf"
 
     login_manager = LoginManager(app)
 
