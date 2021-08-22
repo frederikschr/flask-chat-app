@@ -6,9 +6,12 @@ from flask_restful import Api
 from .resources import jwt
 from .resources import *
 import os
-from os import path
 
 app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "test"
 
 def create_app():
     app.config["SECRET_KEY"] = "secret!"
