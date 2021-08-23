@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 p.setAttribute("class", "own-message");
             }
             document.querySelector('#display-message-section').append(p);
+            updateScroll();
       })
 
     socket.on('room-manager', data => {
@@ -103,3 +104,9 @@ function removeMember(member, room) {
         socket.emit('member-removed', {'member': member, 'room': room});
     }
 }
+
+function updateScroll(){
+    var element = document.getElementById('display-message-section');
+    element.scrollTop = element.scrollHeight;
+}
+
