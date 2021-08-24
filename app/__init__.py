@@ -44,13 +44,13 @@ def create_app():
 def register_resources():
     api = Api(app)
 
-    api.add_resource(GetAllUsers, "/api/get-users")
-    api.add_resource(GetOneUser, "/api/get-user/<id>")
     api.add_resource(CreateAccessToken, "/api/token")
-    api.add_resource(GetMyPassword, "/api/me")
-    api.add_resource(GetAllUserMessages, "/api/messages")
-    api.add_resource(GetUserContent, "/api/message/<username>/<content>")
+
+    api.add_resource(OneUser, "/api/user/<int:id>")
+    api.add_resource(AllUsers, "/api/users")
+    api.add_resource(MyUser, "/api/me")
 
 def create_database(app):
     db.create_all(app=app)
     print("Created database")
+    create_admin(app)
