@@ -19,6 +19,10 @@ def on_connect():
     if current_user.is_authenticated:
         client_sid[current_user.username] = request.sid
 
+@socketio.on("disconnect")
+def on_disconnect():
+    del client_sid[current_user.username]
+
 @socketio.on('message')
 def on_message(msg):
     if current_user.is_authenticated:

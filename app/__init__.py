@@ -46,9 +46,16 @@ def register_resources():
 
     api.add_resource(CreateAccessToken, "/api/token")
 
-    api.add_resource(OneUser, "/api/user/<int:id>")
-    api.add_resource(AllUsers, "/api/users")
-    api.add_resource(MyUser, "/api/me")
+    api.add_resource(MyUser, "/api/user/me")
+
+    api.add_resource(OneUser, "/api/user/one")
+    api.add_resource(AllUsers, "/api/user/all")
+
+    api.add_resource(OneMessage, "/api/message/one")
+    api.add_resource(ALlMessages, "/api/message/all")
+
+    api.add_resource(OneRoom, "/api/room/one")
+    api.add_resource(ALlRooms, "/api/room/all")
 
 def create_database(app):
     db.create_all(app=app)

@@ -53,6 +53,9 @@ class Room(db.Model):
     owner = db.Column(db.String(80), db.ForeignKey('user.username'))
     messages = db.relationship('Message')
 
+    def get_data(self):
+        return {"id": self.id, "room_name": self.room_name, "owner": self.owner, "messages": [{"author": message.author, "content": message.content} for message in self.messages if not message.is_system_message]}
+
 class Message(db.Model):
     __tablename__ = "message"
 
@@ -62,3 +65,6 @@ class Message(db.Model):
     content = db.Column(db.String(500))
     receivers = db.relationship('User', secondary=message_receivers, backref=db.backref('messages', lazy='dynamic'))
     is_system_message = db.Column(db.Boolean, default=False)
+
+    def get_data(self):
+        return {"id": self.id, "room_id": self.room_id, "author": self.author, "content": self.content, "is_system_message": self.is_system_message}

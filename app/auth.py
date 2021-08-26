@@ -1,9 +1,10 @@
-from flask import Blueprint, render_template, flash, url_for, redirect, session, request
+from flask import Blueprint, render_template, flash, url_for, redirect, session
 from flask_login import login_user, logout_user, current_user, login_required
 from .wtform_fields import RegistrationForm, LoginForm
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash
 from .models import *
 from app import app
+from .socket import client_sid
 
 auth = Blueprint("auth", __name__)
 
@@ -50,10 +51,13 @@ def login():
 
         if user:
             if check_password_hash(user.password, password):
-                login_user(user)
-                flash("Logged in successfully", category="success")
-                session["current_room"] = "Lobby"
-                return redirect(url_for("views.chat"))
+                if not user.username in client_sid:
+                    login_user(user)
+                    flash("Logged in successfully", category="success")
+                    session["current_room"] = "Lobby"
+                    return redirect(url_for("views.chat"))
+                else:
+                    flash("Already logged in. You can only use one device at a time", category="error")
             else:
                 flash("Password is incorrect", category="error")
         else:
