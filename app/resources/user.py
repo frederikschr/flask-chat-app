@@ -16,9 +16,27 @@ class OneUser(Resource):
                 "rooms": [room.room_name for room in user.rooms]} if user else {"message": "User not found"}
 
     @jwt_required
-    def put(self, id):
+    def patch(self):
+        json_data = request.get_json()
+        user_id = json_data["user_id"]
+        new_user_admin = User.query.filter_by(id=user_id).first()
         user = User.query.filter_by(id=get_jwt_identity()).first()
-        user_delete = User.query.filter_by(id=id).first()
+        if user.is_admin:
+            if new_user_admin:
+                new_user_admin.is_admin = True
+                db.session.commit()
+                return {"message": f"Successfully changed admin status of {new_user_admin.username}"}, HTTPStatus.OK
+            else:
+                return {"message": "User not found"}, HTTPStatus.NOT_FOUND
+        else:
+            return {"message": "Not authorized"}, HTTPStatus.UNAUTHORIZED
+
+    @jwt_required
+    def put(self):
+        json_data = request.get_json()
+        user_id = json_data["user_id"]
+        user = User.query.filter_by(id=get_jwt_identity()).first()
+        user_delete = User.query.filter_by(id=user_id).first()
         if user.is_admin:
             if user_delete:
                 db.session.delete()
@@ -28,6 +46,7 @@ class OneUser(Resource):
                 return {"message": "User not found"}, HTTPStatus.NOT_FOUND
         else:
             return {"message": "Not authorized"}, HTTPStatus.UNAUTHORIZED
+
 
 class AllUsers(Resource):
     @jwt_required
