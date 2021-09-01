@@ -1,20 +1,20 @@
 {% extends "base.html" %} {% block title %} Chat {% endblock %}
 {% block content %}
     <h1>About</h1><br>
-        <div style="width: 75%; margin: auto; text-align: center;">
+        <div class="about" style="margin: auto; text-align: center;">
             <h2 style="padding: 20px;"><i>What is F-Chat?</i></h2>
                 <p>F-Chat is a simple chat app by <b>Frederik Schier</b>, made with the micro web framework <b>Flask</b> for the programming language
-                <b>Python</b><br>. It allows communication with other users through individual chat rooms that the user is
-                    able to create himself.<br> He can manage his created rooms at any time by adding a user, removing a user, clearing the room or completely deleting it.<br>
+                <b>Python</b>. It allows communication with other users through individual chat rooms that the user is
+                    able to create himself. He can manage his created rooms at any time by adding a user, removing a user, clearing the room or completely deleting it.
                     F-Chat is <b>Open Source</b> and the Source Code can be found <a href="https://github.com/Freddy382/flask-chat-app">here</a>.
                 </p>
             <h2 style="padding: 20px;"><i>How does F-Chat work?</i></h2>
                 <h3>Networking</h3>
-                <p>In order to establish a connection between the different users and the server, F-Chat uses the python module <b>Flask-SocketIO</b>.<br>
+                <p>In order to establish a connection between the different users and the server, F-Chat uses the python module <b>Flask-SocketIO</b>.
                     It allows many clients to connect to the server which is then going to handle the different clients and group them into
-                    rooms. The server-side of the app <br> is written in <b>Python</b> and the client-browser-side in <b>JavaScript</b>.
-                    </br>The clients and the server are able to communicate through so-called events which are triggered based on  an action on the client side.
-                    When a user for example logs into the chat app, the join event on the client-side is triggered which it emits to the server-side using the Flask-SocketIO module. The server side <br>
+                    rooms. The server-side of the app is written in <b>Python</b> and the client-browser-side in <b>JavaScript</b>.
+                    The clients and the server are able to communicate through so-called events which are triggered based on  an action on the client side.
+                    When a user for example logs into the chat app, the join event on the client-side is triggered which it emits to the server-side using the Flask-SocketIO module. The server side
                     receives and handles it and then broadcasts it to the other users in the joined room.</p>
                 <h3>Data Saving</h3>
                 <p>All the data that the app needs are saved in a <b>PostgreSQL</b> database which the server accesses and modifies using the python module <b>Flask-SQLAlchemy</b>.
@@ -23,18 +23,47 @@
                 <p>Data only relevant while the user is logged in is not saved in the Database. Instead, it is saved in the user session which is made with the <b>Flask-Session</b> python module
                     It contains data about the current room the user is in as well as the username of the user which is used for rendering the HTML templates.</p>
                 <h3>Hosting</h3>
-                <p>F-Chat is running on the cloud and is deployed on the cloud platform <b>Heroku</b>. During development times, it was hosted locally on the developer's machine but was then<br>
+                <p>F-Chat is running on the cloud and is deployed on the cloud platform <b>Heroku</b>. During development times, it was hosted locally on the developer's machine but was then
                 moved to the cloud for production. The cloud application gets the code from the projects GitHub repository and rebuilds the program as soon as changes are made to it.</p>
             <h2 style="padding: 20px;">API</h2>
-                <p>F-Chat offers a simple API that can be used by every user. It offers an easy way to analyze the app's data by querying the database. <br>
+                <p>F-Chat offers a simple API that can be used by every user. It offers an easy way to analyze the app's data by querying the database.
                     In order to use it, you need to get an <b>API token</b>. A description on how you can get this token can be found below.</p>
                 <h3>Endpoints</h3><br>
                 <ul style="list-style-type: none">
-                    <li>Get token: You need to pass your username as well as your password in json format<br><i>/api/token</i></li><br>
-                    <li>Get your hashed password: <i>/api/me</i></li>
+                    <li>Get token: You need to pass your username as well as your password in json format<i>/api/token</i></li>
                     <li><i></i></li>
                     <li><i></i></li>
                     <li><i></i></li>
+                    <li><i></i></li><br>
+                <h3>Example</h3>
+                    <div class="code" style="text-align: left;">
+                        <pre>
+
+<code>import requests
+import json
+
+url = "https://f-chat-frederik.herokuapp.com/api"
+
+payload = json.dumps({
+  "username": "<b>YOUR USERNAME</b>",
+  "password": "<b>YOUR PASSWORD</b>"
+})
+
+token_request = requests.get(f"{url}/token", headers=
+    {"Content-Type": "application/json"}, data=payload)
+
+access_token = token_request.json()["access_token"]
+
+headers = {
+  "Content-Type": "application/json",
+  "Authorization": f"Bearer {access_token}"
+}
+
+request = requests.get(f"{url}/user/all", headers=headers)
+
+print(request.text, request.status_code)</code>
+                        </pre>
+                    </div>
                 </ul>
         </div>
 

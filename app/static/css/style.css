@@ -115,6 +115,10 @@
     text-align: center;
 }
 
+.about {
+    width: 40%;
+}
+
 
 .content h1 {
     font-size: 40px;
@@ -207,6 +211,10 @@ button:hover {
         z-index: 1;
         transition: 1s;
 
+    }
+
+    .about {
+        width: 75%;
     }
 
     .bars i {
