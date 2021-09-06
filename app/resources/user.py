@@ -49,7 +49,7 @@ class OneUser(Resource):
 
 
 class AllUsers(Resource):
-    @jwt_required
+    #@jwt_required
     def get(self):
         users = [user.get_data() for user in User.query.all()]
         return users, HTTPStatus.OK
